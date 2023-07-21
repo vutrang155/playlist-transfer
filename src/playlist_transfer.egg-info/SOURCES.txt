@@ -1,0 +1,10 @@
+LICENCE
+README.md
+pyproject.toml
+src/playlist_transfer/__init__.py
+src/playlist_transfer.egg-info/PKG-INFO
+src/playlist_transfer.egg-info/SOURCES.txt
+src/playlist_transfer.egg-info/dependency_links.txt
+src/playlist_transfer.egg-info/entry_points.txt
+src/playlist_transfer.egg-info/requires.txt
+src/playlist_transfer.egg-info/top_level.txt

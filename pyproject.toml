@@ -3,13 +3,13 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "music-platform-migration"
+name = "playlist-transfer"
 version = "0.0.1"
 authors = [{name = "Vu Trang", email = "tranghoangphongvu@gmail.com"}]
-description = "Migrate your music playlists between platform with ease"
+description = "Migrate your music playlists between music services"
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = ["beautifulsoup4 >=4.12.0"]
 
 [project.scripts]
-hello-world = "music_platform_migration:hello_world"
+hello-world = "playlist_transfer:hello_world"

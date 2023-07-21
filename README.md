@@ -1,1 +1,1 @@
-A script to migrates your playlists between platforms
+Migrate your playlists between platforms
