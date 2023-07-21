@@ -1,4 +1,4 @@
-from playlist_transfer.spotify_scrapper import * 
+from playlist_transfer.spotify_scraper import * 
 
 from playlist_transfer.types import *
 
