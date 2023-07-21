@@ -1,0 +1,10 @@
+Metadata-Version: 2.1
+Name: music-platform-migration
+Version: 0.0.1
+Summary: Migrate your music playlists between platform with ease
+Author-email: Vu Trang <tranghoangphongvu@gmail.com>
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENCE
+
+A script to migrates your playlists between platforms

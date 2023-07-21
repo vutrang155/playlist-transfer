@@ -1,0 +1,11 @@
+LICENCE
+README.md
+pyproject.toml
+src/music_platform_migration/__init__.py
+src/music_platform_migration/__main__.py
+src/music_platform_migration.egg-info/PKG-INFO
+src/music_platform_migration.egg-info/SOURCES.txt
+src/music_platform_migration.egg-info/dependency_links.txt
+src/music_platform_migration.egg-info/entry_points.txt
+src/music_platform_migration.egg-info/requires.txt
+src/music_platform_migration.egg-info/top_level.txt
