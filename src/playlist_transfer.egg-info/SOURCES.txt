@@ -1,7 +1,8 @@
-LICENCE
+LICENSE
 README.md
 pyproject.toml
 src/playlist_transfer/__init__.py
+src/playlist_transfer/pipeline.py
 src/playlist_transfer.egg-info/PKG-INFO
 src/playlist_transfer.egg-info/SOURCES.txt
 src/playlist_transfer.egg-info/dependency_links.txt
