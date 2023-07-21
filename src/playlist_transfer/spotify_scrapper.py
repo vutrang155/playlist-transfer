@@ -1,18 +1,13 @@
 from bs4 import BeautifulSoup
 
 from playlist_transfer.pipeline import Pipe
+from playlist_transfer.tracks_retriever import RetrieveStrategy, TracksRetriever
+from playlist_transfer.types import *
 
-from typing import NewType, Optional, List, TypedDict
+from typing import Optional, List
 
-HtmlDoc = NewType("HtmlDoc", str)
-Url = NewType("Url", str)
-PlaylistTrackUrls = TypedDict('PlaylistTrackUrls', {'title':str, 'track_ids': List[Url]})
-
-class PlaylistTracksExtractor(Pipe[HtmlDoc, PlaylistTrackUrls]):
-    def process(self, input: HtmlDoc) -> PlaylistTrackUrls:
-        return self.__process(input)
-
-    def __process(self, input:HtmlDoc) -> PlaylistTrackUrls:
+class PlaylistTracksExtractor(Pipe[HtmlDoc, PlaylistTrackIds]):
+    def process(self, input: HtmlDoc) -> PlaylistTrackIds:
         soup = BeautifulSoup(input, 'html.parser')
 
         _title = self.__extractTitle(soup)
@@ -22,7 +17,7 @@ class PlaylistTracksExtractor(Pipe[HtmlDoc, PlaylistTrackUrls]):
         title = str(_title) if _title is not None else ""
 
         track_ids = self.__extractTracks(soup) 
-        return PlaylistTrackUrls(title=title, track_ids=track_ids)
+        return PlaylistTrackIds(title=title, track_ids=track_ids)
 
     def __extractTitle(self, soup: BeautifulSoup) -> Optional[str]:
         results = soup.find_all("meta", {"property" : "og:title"})
@@ -33,15 +28,28 @@ class PlaylistTracksExtractor(Pipe[HtmlDoc, PlaylistTrackUrls]):
         
         return results[0]['content']
 
-    def __extractTracks(self, soup: BeautifulSoup) -> List[Url]:
+    def __extractTracks(self, soup: BeautifulSoup) -> List[TrackId]:
         track_tags = soup.find_all("meta", {"name": "music:song"})
 
         if len(track_tags) == 0:
             # TODO: Log
             return [] 
 
-        track_urls = [tag['content'] for tag in track_tags]
-        track_ids = [url.split("track/")[1] for url in track_urls]
+        track_ids = [tag['content'] for tag in track_tags]
+        track_ids = [track_id.split("track/")[1] for track_id in track_ids]
         # TODO: Log
 
         return track_ids
+
+class PlaylistTrackIdsRetriever(Pipe[PlaylistTrackIds, Playlist]):
+    def __init__(self, strategy:RetrieveStrategy):
+        self.__track_retriever = TracksRetriever(strategy) 
+
+    def process(self, input:PlaylistTrackIds) -> Playlist:
+        playlist_title = input['title']
+        track_ids = input['track_ids']
+        
+        _tracks = self.__track_retriever.execute(track_ids)
+        tracks = list(_tracks) if _tracks != None else list()
+            
+        return Playlist(title=playlist_title, songs=tracks)
