@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 
 from playlist_transfer.pipeline import Pipe
-from playlist_transfer.tracks_retriever import RetrieveStrategy, TracksRetriever
+from playlist_transfer.tracks_retriever import IRequestRetriever, RetrieveStrategy, TracksRetriever
 from playlist_transfer.types import *
 
 from typing import Optional, List
@@ -42,14 +42,17 @@ class PlaylistTracksExtractor(Pipe[HtmlDoc, PlaylistTrackIds]):
         return track_ids
 
 class PlaylistTrackIdsRetriever(Pipe[PlaylistTrackIds, Playlist]):
-    def __init__(self, strategy:RetrieveStrategy):
-        self.__track_retriever = TracksRetriever(strategy) 
+    def __init__(self, request_retriever:IRequestRetriever, strategy:RetrieveStrategy=RetrieveStrategy.SINGLE_THREAD):
+        self.__track_retriever = TracksRetriever(request_retriever, strategy) 
 
     def process(self, input:PlaylistTrackIds) -> Playlist:
         playlist_title = input['title']
         track_ids = input['track_ids']
         
         _tracks = self.__track_retriever.execute(track_ids)
-        tracks = list(_tracks) if _tracks != None else list()
+        tracks = []
+        for track_id in input['track_ids']:
+            if track_id in _tracks.keys():
+                tracks.append(_tracks[track_id])
             
-        return Playlist(title=playlist_title, songs=tracks)
+        return Playlist(title=playlist_title, tracks=tracks)
