@@ -6,6 +6,8 @@ from playlist_transfer.pipeline import Pipe, Pipeline
 
 from bs4 import BeautifulSoup
 
+import concurrent.futures
+
 import requests
 
 from abc import ABC, abstractmethod
@@ -115,8 +117,21 @@ class SingleThreadRetriever(AbstractTrackRetrieverStrategy):
 
 class MultiThreadRetriever(AbstractTrackRetrieverStrategy):
     def process(self, track_ids: List[TrackId]) -> Mapping[TrackId, Track]:
-        result_by_id = Mapping()
-        return result_by_id 
+        res:Mapping[TrackId, Track] = {}
+        retriever = Pipeline(OneTrackRetriever(self._request_retriever)).add(OneTrackExtractor())
+
+        # Thread Pool with worker = user's thread * 3 
+        with concurrent.futures.ThreadPoolExecutor(max_workers=None) as executor:
+            future_to_url = {executor.submit(retriever.execute, track_id): track_id for track_id in track_ids}
+            for future in concurrent.futures.as_completed(future_to_url):
+                track_id = future_to_url[future]
+                _track = future.result()
+                if _track == None:
+                    continue
+                track = Track(_track)
+                res[track_id] = track
+
+        return res
 
 class TracksRetriever:
     def __init__(self, request_retriever: IRequestRetriever, strategy = RetrieveStrategy.SINGLE_THREAD):

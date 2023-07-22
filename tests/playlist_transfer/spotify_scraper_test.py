@@ -60,7 +60,7 @@ def test_can_parse_one_track():
     actual = parser.process(input)
     assert expected == actual
 
-def test_can_parse_tracks():
+def test_can_parse_tracks_single_thread():
     expected = {'title': 'jazzy ketchup', 'tracks': [{'artist': 'Bill Evans', 'duration': 370, 'title': 'The Two Lonely People'}, {'artist': 'Chet Baker', 'duration' : 424, 'title': 'Autumn Leaves'}, {'artist': 'John Coltrane, Johnny Hartman', 'duration': 294, 'title': 'My One And Only Love'}]}
     class MockRequestRetriever(IRequestRetriever):
         def process(self, url:str) -> Optional[HtmlDoc]:
@@ -80,4 +80,26 @@ def test_can_parse_tracks():
     playlist_doc = HtmlDoc(f.read())
     mock_request_retriever = MockRequestRetriever()
     playlist = Pipeline(PlaylistTracksExtractor()).add(PlaylistTrackIdsRetriever(mock_request_retriever)).execute(playlist_doc) 
+    assert expected == playlist
+
+def test_can_parse_tracks_multi_thread():
+    expected = {'title': 'jazzy ketchup', 'tracks': [{'artist': 'Bill Evans', 'duration': 370, 'title': 'The Two Lonely People'}, {'artist': 'Chet Baker', 'duration' : 424, 'title': 'Autumn Leaves'}, {'artist': 'John Coltrane, Johnny Hartman', 'duration': 294, 'title': 'My One And Only Love'}]}
+    class MockRequestRetriever(IRequestRetriever):
+        def process(self, url:str) -> Optional[HtmlDoc]:
+            if url == "https://open.spotify.con/track/2Syy6iCju7lcPLesnbEwnV":
+                f = open("tests/ressources/tracks/track_1.html")
+                return HtmlDoc(f.read())
+            elif url == "https://open.spotify.con/track/2iUrcZcAuVIahQD0dg9HLe":
+                f = open("tests/ressources/tracks/track_2.html")
+                return HtmlDoc(f.read())
+            elif url == "https://open.spotify.con/track/1HEGcv63IZ7TPncpVKdVdN":
+                f = open("tests/ressources/tracks/track_3.html")
+                return HtmlDoc(f.read())
+            else:
+                return None
+
+    f = open("tests/ressources/playlist_1.html")
+    playlist_doc = HtmlDoc(f.read())
+    mock_request_retriever = MockRequestRetriever()
+    playlist = Pipeline(PlaylistTracksExtractor()).add(PlaylistTrackIdsRetriever(mock_request_retriever, RetrieveStrategy.MULTI_THREAD)).execute(playlist_doc) 
     assert expected == playlist
