@@ -3,6 +3,7 @@ README.md
 pyproject.toml
 src/playlist_transfer/__init__.py
 src/playlist_transfer/pipeline.py
+src/playlist_transfer/request_retriever.py
 src/playlist_transfer/spotify_scraper.py
 src/playlist_transfer/tracks_retriever.py
 src/playlist_transfer/types.py
