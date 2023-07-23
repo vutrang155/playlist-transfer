@@ -4,8 +4,6 @@ pyproject.toml
 src/playlist_transfer/__init__.py
 src/playlist_transfer/pipeline.py
 src/playlist_transfer/request_retriever.py
-src/playlist_transfer/spotify_scraper.py
-src/playlist_transfer/tracks_retriever.py
 src/playlist_transfer/types.py
 src/playlist_transfer.egg-info/PKG-INFO
 src/playlist_transfer.egg-info/SOURCES.txt
@@ -13,3 +11,6 @@ src/playlist_transfer.egg-info/dependency_links.txt
 src/playlist_transfer.egg-info/entry_points.txt
 src/playlist_transfer.egg-info/requires.txt
 src/playlist_transfer.egg-info/top_level.txt
+src/playlist_transfer/spotify/playlist_scraper.py
+src/playlist_transfer/spotify/track_scraper.py
+src/playlist_transfer/spotify/types.py

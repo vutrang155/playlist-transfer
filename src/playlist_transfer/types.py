@@ -15,14 +15,6 @@ class IHtmlDocParser(ABC, Generic[HtmlDocParseable]):
     def from_html(self, doc: HtmlDoc) -> Optional[HtmlDocParseable]: 
         pass
 
-class SpotifyTrackId(str, ToUrl):
-    def to_url(self) -> Url | None:
-        return Url("https://open.spotify.con/track/" + self.__str__())
-
-class SpotifyPlaylist(TypedDict):
-    title:str
-    track_ids: List[SpotifyTrackId]
-
 class Track(TypedDict):
     title:str
     artist:str
