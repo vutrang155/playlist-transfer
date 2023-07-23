@@ -1,2 +1,2 @@
 [console_scripts]
-hello-world = playlist_transfer:hello_world
+spotify-playlist = playlist_transfer:spotify_playlist

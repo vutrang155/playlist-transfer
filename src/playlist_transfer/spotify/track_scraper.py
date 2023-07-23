@@ -5,22 +5,8 @@ from playlist_transfer.spotify.types import *
 from playlist_transfer.request_retriever import IRequestRetriever, RetrieveContext, RetrieveStrategy
 
 from bs4 import BeautifulSoup
-import requests
 import re
 from typing import Optional, List
-
-class RequestRetriever(IRequestRetriever):
-    def execute(self, url:str) -> Optional[HtmlDoc]:
-        USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-        headers = {
-                'user-agent' : USER_AGENT
-                }
-
-        result:requests.Response = requests.get(url, headers=headers) 
-        if result.status_code != 200:
-            # TODO: Log
-            return None 
-        return HtmlDoc(result.text)
 
 class SpotifyTrackHtmlDocParser(IHtmlDocParser[Track]):
     def from_html(self, input: HtmlDoc) -> Optional[Track]:

@@ -1,21 +1,30 @@
 from __future__ import annotations  # For posponing annotation
 
 from abc import ABC, abstractmethod
-from typing import TypeVar, Generic
+from typing import Optional, TypeVar, Generic
+
+from playlist_transfer.exceptions import PipelineException
 
 In = TypeVar("In")
 Out = TypeVar("Out")
 NewOut = TypeVar("NewOut")
-
 
 class Pipe(ABC, Generic[In, Out]):
     @abstractmethod
     def process(self, input: In) -> Out:
         pass
 
+class ValueOrError(Pipe[Optional[Out], Out], Generic[Out]):
+    def __init__(self, msg):
+        self.msg = msg
+
+    def process(self, input: Optional[Out]) -> Out:
+        if input == None:
+            raise PipelineException(self.msg) 
+        res: Out = input
+        return res
 
 class Pipeline(ABC, Generic[In, Out]):
-
     def __init__(self, current_pipe: Pipe[In, Out]):
         self.current_pipe = current_pipe
 

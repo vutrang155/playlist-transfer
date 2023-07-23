@@ -62,13 +62,13 @@ def test_can_parse_tracks_single_thread():
     expected = {'title': 'jazzy ketchup', 'tracks': [{'artist': 'Bill Evans', 'duration': 370, 'title': 'The Two Lonely People'}, {'artist': 'Chet Baker', 'duration' : 424, 'title': 'Autumn Leaves'}, {'artist': 'John Coltrane, Johnny Hartman', 'duration': 294, 'title': 'My One And Only Love'}]}
     class MockRequestRetriever(IRequestRetriever):
         def process(self, url:str) -> Optional[HtmlDoc]:
-            if url == "https://open.spotify.con/track/2Syy6iCju7lcPLesnbEwnV":
+            if url == "https://open.spotify.com/track/2Syy6iCju7lcPLesnbEwnV":
                 f = open("tests/ressources/tracks/track_1.html")
                 return HtmlDoc(f.read())
-            elif url == "https://open.spotify.con/track/2iUrcZcAuVIahQD0dg9HLe":
+            elif url == "https://open.spotify.com/track/2iUrcZcAuVIahQD0dg9HLe":
                 f = open("tests/ressources/tracks/track_2.html")
                 return HtmlDoc(f.read())
-            elif url == "https://open.spotify.con/track/1HEGcv63IZ7TPncpVKdVdN":
+            elif url == "https://open.spotify.com/track/1HEGcv63IZ7TPncpVKdVdN":
                 f = open("tests/ressources/tracks/track_3.html")
                 return HtmlDoc(f.read())
             else:
@@ -85,13 +85,13 @@ def test_can_parse_tracks_multi_thread():
     expected = {'title': 'jazzy ketchup', 'tracks': [{'artist': 'Bill Evans', 'duration': 370, 'title': 'The Two Lonely People'}, {'artist': 'Chet Baker', 'duration' : 424, 'title': 'Autumn Leaves'}, {'artist': 'John Coltrane, Johnny Hartman', 'duration': 294, 'title': 'My One And Only Love'}]}
     class MockRequestRetriever(IRequestRetriever):
         def process(self, url:str) -> Optional[HtmlDoc]:
-            if url == "https://open.spotify.con/track/2Syy6iCju7lcPLesnbEwnV":
+            if url == "https://open.spotify.com/track/2Syy6iCju7lcPLesnbEwnV":
                 f = open("tests/ressources/tracks/track_1.html")
                 return HtmlDoc(f.read())
-            elif url == "https://open.spotify.con/track/2iUrcZcAuVIahQD0dg9HLe":
+            elif url == "https://open.spotify.com/track/2iUrcZcAuVIahQD0dg9HLe":
                 f = open("tests/ressources/tracks/track_2.html")
                 return HtmlDoc(f.read())
-            elif url == "https://open.spotify.con/track/1HEGcv63IZ7TPncpVKdVdN":
+            elif url == "https://open.spotify.com/track/1HEGcv63IZ7TPncpVKdVdN":
                 f = open("tests/ressources/tracks/track_3.html")
                 return HtmlDoc(f.read())
             else:
