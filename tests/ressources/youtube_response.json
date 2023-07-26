@@ -1,0 +1,40 @@
+{
+    "kind": "youtube#searchListResponse",
+    "etag": "qGrwNOdND_zpR59GOK7ImNkBuUU",
+    "nextPageToken": "CAEQAA",
+    "regionCode": "FR",
+    "pageInfo": { "totalResults": 1000000, "resultsPerPage": 1 },
+    "items": [
+        {
+            "kind": "youtube#searchResult",
+            "etag": "p77249uYxYcltCNicEtl2sDSYqg",
+            "id": { "kind": "youtube#video", "videoId": "wgXfou15I28" },
+            "snippet": {
+                "publishedAt": "2017-04-09T05:53:12Z",
+                "channelId": "UCriB97bZopXsBHVYOQEIIZg",
+                "title": "The Two Lonely People",
+                "description": "Provided to YouTube by Columbia The Two Lonely People · Bill Evans The Bill Evans Album ℗ Originally Recorded 1970 Sony ...",
+                "thumbnails": {
+                    "default": {
+                        "url": "https://i.ytimg.com/vi/wgXfou15I28/default.jpg",
+                        "width": 120,
+                        "height": 90
+                    },
+                    "medium": {
+                        "url": "https://i.ytimg.com/vi/wgXfou15I28/mqdefault.jpg",
+                        "width": 320,
+                        "height": 180
+                    },
+                    "high": {
+                        "url": "https://i.ytimg.com/vi/wgXfou15I28/hqdefault.jpg",
+                        "width": 480,
+                        "height": 360
+                    }
+                },
+                "channelTitle": "Bill Evans - Topic",
+                "liveBroadcastContent": "none",
+                "publishTime": "2017-04-09T05:53:12Z"
+            }
+        }
+    ]
+}

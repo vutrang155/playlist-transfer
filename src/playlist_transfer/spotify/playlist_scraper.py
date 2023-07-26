@@ -8,16 +8,16 @@ from playlist_transfer.request_retriever import RetrieveStrategy
 
 from typing import Optional, List
 
-class SpotifyPlaylistHtmlDocParser(IHtmlDocParser[SpotifyPlaylist]):
-    def from_html(self, input: HtmlDoc) -> Optional[SpotifyPlaylist]:
+class SpotifyPlaylistResponseParser(IResponseParser[SpotifyPlaylist]):
+    def from_response(self, input: TextResponse) -> Optional[SpotifyPlaylist]:
         soup = BeautifulSoup(input, 'html.parser')
-        _title = SpotifyPlaylistHtmlDocParser.__extractTitle(soup)
+        _title = SpotifyPlaylistResponseParser.__extractTitle(soup)
         if _title == None:
             # TODO: Log 
             pass
         title = str(_title) if _title is not None else ""
 
-        track_ids = SpotifyPlaylistHtmlDocParser.__extractTracks(soup) 
+        track_ids = SpotifyPlaylistResponseParser.__extractTracks(soup) 
         return SpotifyPlaylist(title=title, track_ids=track_ids)
 
     @staticmethod
@@ -44,9 +44,9 @@ class SpotifyPlaylistHtmlDocParser(IHtmlDocParser[SpotifyPlaylist]):
 
         return track_ids
 
-class SpotifyHtmlDocParser(Pipe[HtmlDoc, SpotifyPlaylist]):
-    def process(self, input:HtmlDoc) -> Optional[SpotifyPlaylist]:
-        return SpotifyPlaylistHtmlDocParser().from_html(input) 
+class SpotifyResponseParser(Pipe[Response, SpotifyPlaylist]):
+    def process(self, input:TextResponse) -> Optional[SpotifyPlaylist]:
+        return SpotifyPlaylistResponseParser().from_response(input) 
 
 class SpotifyPlaylistToPlaylist(Pipe[SpotifyPlaylist, Playlist]):
     def __init__(self, request_retriever:IRequestRetriever, strategy:RetrieveStrategy=RetrieveStrategy.SINGLE_THREAD):

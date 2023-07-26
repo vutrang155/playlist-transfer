@@ -41,9 +41,9 @@ def test_can_parse_title():
     expected = SpotifyPlaylist(title=str(expected_title), track_ids=expected_track_ids)
 
     f = open("tests/ressources/playlist_1.html")
-    input = HtmlDoc(f.read())
+    input = TextResponse(f.read())
 
-    actual = SpotifyPlaylistHtmlDocParser().from_html(input)
+    actual = SpotifyPlaylistResponseParser().from_response(input)
     assert expected == actual 
 
 def test_can_parse_one_track():
@@ -53,52 +53,42 @@ def test_can_parse_one_track():
     expected = Track(title=expected_title, artist=expected_artist, duration=expected_duration)
 
     f = open("tests/ressources/tracks/track_1.html")
-    input = HtmlDoc(f.read())
+    input = TextResponse(f.read())
 
-    actual = SpotifyTrackHtmlDocParser().from_html(input) 
+    actual = SpotifyTrackHtmlDocParser().from_response(input) 
     assert expected == actual
+
+class MockRequestRetriever(IRequestRetriever):
+    def with_default_header(self, key:str, val:str): 
+        pass
+
+    def process(self, url:str) -> Optional[TextResponse]:
+        if url == "https://open.spotify.com/track/2Syy6iCju7lcPLesnbEwnV":
+            f = open("tests/ressources/tracks/track_1.html")
+            return TextResponse(f.read())
+        elif url == "https://open.spotify.com/track/2iUrcZcAuVIahQD0dg9HLe":
+            f = open("tests/ressources/tracks/track_2.html")
+            return TextResponse(f.read())
+        elif url == "https://open.spotify.com/track/1HEGcv63IZ7TPncpVKdVdN":
+            f = open("tests/ressources/tracks/track_3.html")
+            return TextResponse(f.read())
+        else:
+            return None
 
 def test_can_parse_tracks_single_thread():
     expected = {'title': 'jazzy ketchup', 'tracks': [{'artist': 'Bill Evans', 'duration': 370, 'title': 'The Two Lonely People'}, {'artist': 'Chet Baker', 'duration' : 424, 'title': 'Autumn Leaves'}, {'artist': 'John Coltrane, Johnny Hartman', 'duration': 294, 'title': 'My One And Only Love'}]}
-    class MockRequestRetriever(IRequestRetriever):
-        def process(self, url:str) -> Optional[HtmlDoc]:
-            if url == "https://open.spotify.com/track/2Syy6iCju7lcPLesnbEwnV":
-                f = open("tests/ressources/tracks/track_1.html")
-                return HtmlDoc(f.read())
-            elif url == "https://open.spotify.com/track/2iUrcZcAuVIahQD0dg9HLe":
-                f = open("tests/ressources/tracks/track_2.html")
-                return HtmlDoc(f.read())
-            elif url == "https://open.spotify.com/track/1HEGcv63IZ7TPncpVKdVdN":
-                f = open("tests/ressources/tracks/track_3.html")
-                return HtmlDoc(f.read())
-            else:
-                return None
-
     f = open("tests/ressources/playlist_1.html")
-    playlist_doc = HtmlDoc(f.read())
+    playlist_doc = TextResponse(f.read())
     mock_request_retriever = MockRequestRetriever()
-    playlist = Pipeline(SpotifyHtmlDocParser()).add(SpotifyPlaylistToPlaylist(mock_request_retriever)).execute(playlist_doc) 
+    playlist = Pipeline(SpotifyResponseParser()).add(SpotifyPlaylistToPlaylist(mock_request_retriever)).execute(playlist_doc) 
 
     assert expected == playlist
 
 def test_can_parse_tracks_multi_thread():
     expected = {'title': 'jazzy ketchup', 'tracks': [{'artist': 'Bill Evans', 'duration': 370, 'title': 'The Two Lonely People'}, {'artist': 'Chet Baker', 'duration' : 424, 'title': 'Autumn Leaves'}, {'artist': 'John Coltrane, Johnny Hartman', 'duration': 294, 'title': 'My One And Only Love'}]}
-    class MockRequestRetriever(IRequestRetriever):
-        def process(self, url:str) -> Optional[HtmlDoc]:
-            if url == "https://open.spotify.com/track/2Syy6iCju7lcPLesnbEwnV":
-                f = open("tests/ressources/tracks/track_1.html")
-                return HtmlDoc(f.read())
-            elif url == "https://open.spotify.com/track/2iUrcZcAuVIahQD0dg9HLe":
-                f = open("tests/ressources/tracks/track_2.html")
-                return HtmlDoc(f.read())
-            elif url == "https://open.spotify.com/track/1HEGcv63IZ7TPncpVKdVdN":
-                f = open("tests/ressources/tracks/track_3.html")
-                return HtmlDoc(f.read())
-            else:
-                return None
 
     f = open("tests/ressources/playlist_1.html")
-    playlist_doc = HtmlDoc(f.read())
+    playlist_doc = TextResponse(f.read())
     mock_request_retriever = MockRequestRetriever()
-    playlist = Pipeline(SpotifyHtmlDocParser()).add(SpotifyPlaylistToPlaylist(mock_request_retriever, RetrieveStrategy.MULTI_THREAD)).execute(playlist_doc) 
+    playlist = Pipeline(SpotifyResponseParser()).add(SpotifyPlaylistToPlaylist(mock_request_retriever, RetrieveStrategy.MULTI_THREAD)).execute(playlist_doc) 
     assert expected == playlist

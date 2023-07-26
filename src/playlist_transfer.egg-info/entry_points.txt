@@ -1,2 +1,3 @@
 [console_scripts]
 spotify-playlist = playlist_transfer:spotify_playlist
+youtube = playlist_transfer:youtube_test

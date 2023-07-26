@@ -1,6 +1,7 @@
 LICENSE
 README.md
 pyproject.toml
+src/settings.py
 src/playlist_transfer/__init__.py
 src/playlist_transfer/exceptions.py
 src/playlist_transfer/pipeline.py
@@ -15,3 +16,4 @@ src/playlist_transfer.egg-info/top_level.txt
 src/playlist_transfer/spotify/playlist_scraper.py
 src/playlist_transfer/spotify/track_scraper.py
 src/playlist_transfer/spotify/types.py
+src/playlist_transfer/youtube/video_loader.py

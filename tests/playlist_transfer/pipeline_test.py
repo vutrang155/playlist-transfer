@@ -2,7 +2,7 @@ from playlist_transfer.pipeline import *
 
 class ToString(Pipe[int, str]):
     def process(self, input: int) -> str:
-        return str(input)
+            return str(input)
 
 class AddSpaces(Pipe[str, str]):
     def process(self, input: str) -> str:
